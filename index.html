@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ph tube</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .active{
+            background-color: blue;
+            color: white;
+        }
+    </style>
 </head>
-<body>
-    
+
+<body class="w-11/12 mx-auto">
+    <nav class="flex justify-between items-center py-5 border-b-2 border-[#17171720]">
+        <div>
+            <img src="asst/Logo.png" alt="">
+        </div>
+        <div>
+            <button class="btn">sort btn</button>
+        </div>
+        <div>
+            <button class="btn bg-red-500">Sort by view</button>
+        </div>
+    </nav>
+    <!-- btn section -->
+    <nav id="btn-container" class="flex gap-2 justify-center items-center py-5">
+        <button id="btn-all" onclick="allVideoLoad()" class="btn hover:text-white hover:bg-red-500">All</button>
+    </nav>
+
+    <!-- video section -->
+     <section id="video-container" class="grid grid-cols-4 gap-2">
+      
+     </section>
+
+    <script src="script/script.js"></script>
 </body>
+
 </html>
