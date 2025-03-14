@@ -19,8 +19,8 @@ const displayButtonLoad = (categories) => {
 }
 
 // all video load
-const allVideoLoad = async () => {
-  const response = await fetch('https://openapi.programming-hero.com/api/phero-tube/videos');
+const allVideoLoad = async (inputText = '') => {
+  const response = await fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${inputText}`);
   const data = await response.json();
   displayAllVideos(data.videos);
   removeActive();
@@ -30,7 +30,16 @@ const allVideoLoad = async () => {
 // all video display 
 const displayAllVideos = (videos) => {
   const videoContainer = document.getElementById('video-container');
-  videoContainer.innerHTML = ''
+  videoContainer.innerHTML = '';
+  if (videos.length === 0) {
+    videoContainer.innerHTML = `
+     <div class="flex flex-col col-span-full justify-center items-center py-20">
+        <img src="asst/Icon.png" alt="">
+        <h1 class="text-2xl font-semibold mt-3 text-center">Oops!! Sorry, There is no <br> content here</h1>
+       </div>
+    `;
+    return;
+  }
   videos.forEach(video => {
     // console.log(video)
     const div = document.createElement('div');
@@ -60,7 +69,7 @@ const displayAllVideos = (videos) => {
                </div>
               
             </div>
-            <button class="btn btn-block">Details</button>
+            <button onclick="viewVideoID('${video.video_id}')" class="btn btn-block">Details</button>
           </div>
     `;
     videoContainer.appendChild(div);
@@ -75,16 +84,47 @@ const buttonLoadCategory = async (id) => {
   displayAllVideos(data.category);
   removeActive()
   const activeButton = document.getElementById(`btn-${id}`);
- activeButton.classList.add('active');
+  activeButton.classList.add('active');
 
 }
 // remove active class
-const removeActive = () =>{
+const removeActive = () => {
   const activeClass = document.getElementsByClassName('active');
-  for(const btn of activeClass){
-   btn.classList.remove('active');
+  for (const btn of activeClass) {
+    btn.classList.remove('active');
   }
 }
+// video id mo te details show
+const viewVideoID = async (videoID) => {
+  const response = await fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${videoID}`);
+  const data = await response.json();
+  displayModal(data.video)
+}
+// view display details
+const displayModal = (video) => {
+  // console.log(video)
+  document.getElementById('view_modal').showModal();
+  const container = document.getElementById('view-container');
+  container.innerHTML = `
+  <div class="card bg-base-100 image-full w-96 shadow-sm">
+  <figure>
+    <img class="object-cover"
+      src="${video.thumbnail}"
+      alt="Shoes" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">${video.title}</h2>
+    <p>${video.description}</p>
+    
+  </div>
+</div>
+  `
+}
+// search bar
+document.getElementById('input-box').addEventListener('keyup', (e) => {
+  const inputText = e.target.value;
+  allVideoLoad(inputText)
+})
 
 
 
